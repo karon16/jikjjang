@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikjjang_app/utils/constants/colors.dart';
-
+import 'package:jikjjang_app/core/constants/colors.dart';
 
 class JElevatedButtonTheme {
   JElevatedButtonTheme._();

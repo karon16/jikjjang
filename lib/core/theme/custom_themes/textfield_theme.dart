@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikjjang_app/utils/constants/colors.dart';
-
+import 'package:jikjjang_app/core/constants/colors.dart';
 
 class JTextFieldTheme {
   JTextFieldTheme._();
@@ -18,8 +17,8 @@ class JTextFieldTheme {
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.0), // Rounded border
-      borderSide:
-          const BorderSide(color: JAppColors.primary), // Light theme border color
+      borderSide: const BorderSide(
+          color: JAppColors.textSecondary), // Light theme border color
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.0),
@@ -30,7 +29,8 @@ class JTextFieldTheme {
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.0),
       borderSide: const BorderSide(
-          color: JAppColors.primary), // Enabled border color for light theme
+          color:
+              JAppColors.textSecondary), // Enabled border color for light theme
     ),
   );
 

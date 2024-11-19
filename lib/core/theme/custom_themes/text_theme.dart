@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jikjjang_app/utils/constants/colors.dart';
-import 'package:jikjjang_app/utils/constants/font_size.dart';
+import 'package:jikjjang_app/core/constants/colors.dart';
+import 'package:jikjjang_app/core/constants/font_size.dart';
 
 class JTextTheme {
   JTextTheme._();

@@ -15,6 +15,9 @@ dependencies:
   riverpod_annotation: ^2.6.1
   firebase_auth: ^5.3.3
   google_fonts: ^6.2.1
+  firebase_core: ^3.8.0
+  google_sign_in: ^6.2.2
+  firebase_ui_auth: ^1.16.0
 
 dev_dependencies:
   flutter_test:
@@ -31,8 +34,13 @@ flutter:
   uses-material-design: true
 
 
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/logos/jikjjang_logo.png
+    - assets/logos/search.png
+    - assets/logos/apple.png
+    - assets/logos/facebook.png
+    - assets/logos/kakao-talk.png
+    - assets/logos/naver.png
 
 
 

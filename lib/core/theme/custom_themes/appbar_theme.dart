@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jikjjang_app/utils/constants/colors.dart';
+import 'package:jikjjang_app/core/constants/colors.dart';
 
 class JAppBarTheme {
   JAppBarTheme._();
@@ -19,8 +19,7 @@ class JAppBarTheme {
   );
 
   static const darkAppBarTheme = AppBarTheme(
-    backgroundColor:
-        JAppColors.primary, // Dark theme app bar background color
+    backgroundColor: JAppColors.primary, // Dark theme app bar background color
     foregroundColor: Colors.white, // Dark theme app bar text and icon color
     elevation: 4.0, // Dark shadow effect
     titleTextStyle: TextStyle(
