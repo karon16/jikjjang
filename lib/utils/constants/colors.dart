@@ -12,7 +12,7 @@ class JAppColors {
   static const Color textPrimary =
       Color(0xFF222222); // Dark gray/black for main text
   static const Color textSecondary =
-      Color(0xFF666666); // Light gray for secondary text
+      Color(0xFF8E8E93); // Light gray for secondary text
   static const Color textLight =
       Color(0xFFFFFFFF); // White text for dark backgrounds
 
@@ -20,6 +20,8 @@ class JAppColors {
   static const Color backgroundLight = Color(0xFFF5F6FA); // Light background
   static const Color backgroundDark =
       Color(0xFF121212); // Dark background for dark mode
+  static const Color backgroundNavigationBarLight = Color(0xFFFFFFFF);
+  static const Color backgroundNavigationBarDark = Color(0xFF000000);
 
   // Button colors
   static const Color buttonPrimary = primary;
@@ -31,6 +33,7 @@ class JAppColors {
 
   // Icon colors
   static const Color iconPrimary = primary;
-  static const Color iconSecondary =
-      Color(0xFFB3B3B3); // Light gray icons for inactive items
+  static const Color lightIconSecondary =
+      Color(0xFF8E8E93); // Light gray icons for inactive items
+  static const Color darkIconSecondary = Color(0xFFB3B3B3);
 }

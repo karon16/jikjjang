@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jikjjang_app/features/authentication/controllers/auth_providers.dart';
 import 'package:jikjjang_app/features/home/views/home.dart';
+import 'package:jikjjang_app/navigation_menu.dart';
+import 'package:jikjjang_app/utils/constants/image_strings.dart';
+import 'package:jikjjang_app/utils/constants/text_strings.dart';
 // Assuming your theme is imported here
 
 class LoginPage extends ConsumerWidget {
@@ -16,7 +19,7 @@ class LoginPage extends ConsumerWidget {
     final user = ref.watch(authControllerProvider);
 
     if (user != null) {
-      return const MyHomePage(title: 'Home');
+      return const NavigationMenu();
     }
 
     final theme = Theme.of(context);
@@ -55,17 +58,17 @@ class LoginPage extends ConsumerWidget {
               const Divider(thickness: 2),
               const SizedBox(height: 40),
               // Logo
-              Image.asset('assets/logos/jikjjang_logo.png'),
-              const SizedBox(height: 10),
+              Image.asset(JImage_strings.jikjjangLogo, width: 200),
+              const SizedBox(height: 30),
               // Welcome message
               Text(
-                'Welcome to Your Career Gateway!',
+                '${JTextStrings.loginWelcome}',
                 style: theme.textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 4),
               Text(
-                'Sign in to explore new opportunities, advance your career, and move closer to your dream job in Korea.',
+                '${JTextStrings.loginWelcomeBody}',
                 style: theme.textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),

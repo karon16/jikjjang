@@ -1,0 +1,7 @@
+flutter_native_splash:
+    color: "#F5F6FA"
+    color_dark: "#121212"
+    image: assets/logos/jikjjang_logo.png
+    image_dark: assets/logos/jikjjang_logo.png
+
+web: false
