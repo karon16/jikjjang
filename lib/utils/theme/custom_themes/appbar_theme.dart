@@ -5,30 +5,34 @@ class JAppBarTheme {
   JAppBarTheme._();
 
   static const lightAppBarTheme = AppBarTheme(
-    backgroundColor: JAppColors.primary, // Light theme app bar background color
-    foregroundColor: Colors.white, // Light theme app bar text and icon color
+    backgroundColor:
+        JAppColors.backgroundLight, // Light theme app bar background color
+    foregroundColor:
+        JAppColors.primary, // Light theme app bar text and icon color
     elevation: 4.0, // Light shadow effect
     titleTextStyle: TextStyle(
-      fontSize: 20.0,
-      fontWeight: FontWeight.bold,
-      color: Colors.white, // App bar title text color in light theme
+      fontSize: 18.0,
+      fontWeight: FontWeight.w600,
+      color: JAppColors.textPrimary, // App bar title text color in light theme
     ),
     iconTheme: IconThemeData(
-      color: Colors.white, // Icon color in light theme
+      color: JAppColors.textPrimary, // Icon color in light theme
     ),
   );
 
   static const darkAppBarTheme = AppBarTheme(
-    backgroundColor: JAppColors.primary, // Dark theme app bar background color
-    foregroundColor: Colors.white, // Dark theme app bar text and icon color
+    backgroundColor:
+        JAppColors.backgroundDark, // Dark theme app bar background color
+    foregroundColor:
+        JAppColors.primary, // Dark theme app bar text and icon color
     elevation: 4.0, // Dark shadow effect
     titleTextStyle: TextStyle(
-      fontSize: 20.0,
-      fontWeight: FontWeight.bold,
-      color: Colors.white, // App bar title text color in dark theme
+      fontSize: 18.0,
+      fontWeight: FontWeight.w600,
+      color: JAppColors.textLight, // App bar title text color in dark theme
     ),
     iconTheme: IconThemeData(
-      color: Colors.white, // Icon color in dark theme
+      color: JAppColors.textLight, // Icon color in dark theme
     ),
   );
 }

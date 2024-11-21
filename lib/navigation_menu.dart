@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jikjjang_app/data/providers/global_providers.dart';
+import 'package:jikjjang_app/features/authentication/controllers/auth_providers.dart';
+import 'package:jikjjang_app/features/authentication/views/authentication_page.dart';
 import 'package:jikjjang_app/features/home/views/home.dart';
 
 // Define a provider for managing the selected index
 
 class NavigationMenu extends ConsumerWidget {
-  const NavigationMenu({Key? key}) : super(key: key);
+  const NavigationMenu({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch the navigation index provider to get the current index
     final selectedIndex = ref.watch(navigationIndexProvider);
+    final user = ref.watch(authControllerProvider);
+
 
     return Scaffold(
       bottomNavigationBar: NavigationBarTheme(
@@ -21,7 +25,14 @@ class NavigationMenu extends ConsumerWidget {
           elevation: 0,
           selectedIndex: selectedIndex,
           onDestinationSelected: (index) {
-            ref.read(navigationIndexProvider.notifier).state = index;
+            if (user == null && index == 4) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AuthenticationPage()));
+            } else {
+              ref.read(navigationIndexProvider.notifier).state = index;
+            }
           },
           destinations: [
             NavigationDestination(
@@ -66,7 +77,7 @@ class NavigationMenu extends ConsumerWidget {
       case 4:
         return const Center(child: Text('Profile Screen'));
       default:
-        return const Center(child: Text('Home Screen'));
+        return const MyHomePage();
     }
   }
 }
