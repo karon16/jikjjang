@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jikjjang_app/features/authentication/controllers/auth_providers.dart';
+import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 
 class JikjjangSignup extends ConsumerWidget {
   const JikjjangSignup({super.key});
@@ -9,6 +9,7 @@ class JikjjangSignup extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Define the controllers for text fields
     final nameController = TextEditingController();
+    final userID = TextEditingController();
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
@@ -68,7 +69,7 @@ class JikjjangSignup extends ConsumerWidget {
 
             // ID Field
             TextField(
-              controller: nameController, // Added controller
+              controller: userID, // Added controller
               decoration: const InputDecoration(
                 labelText: "Enter your ID",
                 border: OutlineInputBorder(),

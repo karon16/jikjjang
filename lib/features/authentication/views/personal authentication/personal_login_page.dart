@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jikjjang_app/common/widgets/login/social_media_login_row.dart';
-import 'package:jikjjang_app/features/authentication/controllers/auth_providers.dart';
+import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 import 'package:jikjjang_app/features/authentication/views/personal%20authentication/personal_signup_page.dart';
-import 'package:jikjjang_app/navigation_menu.dart';
+import 'package:jikjjang_app/navigation/navigation_menu.dart';
 import 'package:jikjjang_app/utils/constants/image_strings.dart';
 import 'package:jikjjang_app/utils/constants/text_strings.dart';
 

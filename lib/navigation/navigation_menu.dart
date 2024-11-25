@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jikjjang_app/data/providers/global_providers.dart';
-import 'package:jikjjang_app/features/authentication/controllers/auth_providers.dart';
+import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 import 'package:jikjjang_app/features/authentication/views/authentication_page.dart';
-import 'package:jikjjang_app/features/home/views/home.dart';
+import 'package:jikjjang_app/features/job_seeker/home/views/home.dart';
 
 // Define a provider for managing the selected index
 
@@ -15,7 +15,6 @@ class NavigationMenu extends ConsumerWidget {
     // Watch the navigation index provider to get the current index
     final selectedIndex = ref.watch(navigationIndexProvider);
     final user = ref.watch(authControllerProvider);
-
 
     return Scaffold(
       bottomNavigationBar: NavigationBarTheme(

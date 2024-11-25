@@ -7,19 +7,23 @@ class AuthRepository {
   final GoogleSignIn _googleSignIn;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  AuthRepository(FirebaseAuth instance,
-      {FirebaseAuth? firebaseAuth, GoogleSignIn? googleSignIn})
+  AuthRepository({FirebaseAuth? firebaseAuth, GoogleSignIn? googleSignIn})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn();
-        
 
-  Future<User?> signInWithEmail(String email, String password) async {
-    final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return userCredential.user;
+Future<User?> signInWithEmail(String email, String password) async {
+    try {
+      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential.user;
+    } catch (e) {
+      print("Error signing in: $e");
+      return null; // Handle the error properly
+    }
   }
+
 
   Future<User?> signInWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();
@@ -33,13 +37,13 @@ class AuthRepository {
     final userCredential = await _firebaseAuth.signInWithCredential(credential);
     final user = userCredential.user;
 
-    // After signing in with Google, create the user in Firestore if not already created
     if (user != null) {
+      // Ensure user data is created in Firestore
       await createUserInFirestore(
         userId: user.uid,
         email: user.email ?? '',
         name: user.displayName ?? '',
-        role: 'jobSeeker', // Default role for Google users
+        role: 'jobSeeker',
       );
     }
 
@@ -64,39 +68,52 @@ class AuthRepository {
     String? companyName,
     String? companyAddress,
   }) async {
-    await _firestore.collection('Users').doc(userId).set({
-      'userID': userId,
-      'email': email,
-      'name': name,
-      'role': role,
-      'companyID': role == 'jobRecruiter' ? userId : null,
-    });
+    final userDoc = _firestore.collection('users').doc(userId);
+    final userExists = (await userDoc.get()).exists;
 
-    // If role is recruiter, create company document
-    if (role == 'jobRecruiter' &&
-        companyName != null &&
-        companyAddress != null) {
-      await _firestore.collection('Companies').doc(userId).set({
-        'companyID': userId,
-        'companyName': companyName,
-        'companyAddress': companyAddress,
-        'createdBy': userId,
+    if (!userExists) {
+      await userDoc.set({
+        'userID': userId,
+        'email': email,
+        'name': name,
+        'role': role,
+        'profileInfo': {
+          'profileImageURL': null,
+          'bio': '',
+          'experience': [],
+          'skills': [],
+        },
+        'preferences': role == 'jobSeeker'
+            ? {
+                'preferredJobCategories': [],
+                'locationPreference': '',
+                'language': '',
+              }
+            : null,
+        'companyID': role == 'jobRecruiter' ? userId : null,
       });
+
+      if (role == 'jobRecruiter' &&
+          companyName != null &&
+          companyAddress != null) {
+        await _firestore.collection('companies').doc(userId).set({
+          'companyID': userId,
+          'companyName': companyName,
+          'companyAddress': companyAddress,
+          'createdBy': userId,
+          'description': '',
+          'recruiters': [],
+          'industry': '',
+          'logoURL': '',
+        });
+      }
     }
   }
-
 
   Future<void> signOut() async {
-    try {
-      await _firebaseAuth.signOut();
-      await _googleSignIn.signOut(); // Reset the user state
-    } catch (e) {
-      print("Error during sign out: $e");
-    }
+    await _firebaseAuth.signOut();
+    await _googleSignIn.signOut();
   }
-
-
- 
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 }

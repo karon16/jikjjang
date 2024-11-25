@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jikjjang_app/features/authentication/controllers/auth_providers.dart';
+import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 import 'package:jikjjang_app/features/authentication/views/authentication_page.dart';
 
 class MyHomePage extends ConsumerWidget {
@@ -27,7 +27,6 @@ class MyHomePage extends ConsumerWidget {
                       builder: (context) => const AuthenticationPage()),
                 );
               }
-              
             },
           ),
         ],

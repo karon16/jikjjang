@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jikjjang_app/features/authentication/controllers/auth_providers.dart';
+import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 import 'package:jikjjang_app/features/authentication/views/corporate%20authentication/corporate_signup_page.dart';
-import 'package:jikjjang_app/navigation_menu.dart';
+import 'package:jikjjang_app/navigation/recruiter_navigation_menu.dart';
 import 'package:jikjjang_app/utils/constants/image_strings.dart';
 import 'package:jikjjang_app/utils/constants/text_strings.dart';
 
@@ -26,7 +26,8 @@ class CorporateLoginPage extends ConsumerWidget {
         isNavigating.value = true;
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const NavigationMenu()),
+          MaterialPageRoute(
+              builder: (context) => const RecruiterNavigationMenu()),
         );
       }
     });

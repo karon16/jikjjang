@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jikjjang_app/features/authentication/controllers/auth_providers.dart';
+import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 
 class CorporateSignup extends ConsumerWidget {
   const CorporateSignup({super.key});
@@ -51,6 +51,7 @@ class CorporateSignup extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 16.0),
+            
 
             // Code Confirmation
             Row(

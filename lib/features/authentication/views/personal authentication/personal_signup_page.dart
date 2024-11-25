@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jikjjang_app/common/widgets/login/social_media_login_row.dart';
-import 'package:jikjjang_app/features/authentication/controllers/auth_providers.dart';
+import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 import 'package:jikjjang_app/features/authentication/views/personal%20authentication/jikjjang_signup.dart';
 
 class PersonalSignupPage extends ConsumerWidget {
@@ -30,7 +30,7 @@ class PersonalSignupPage extends ConsumerWidget {
               SocialMediaLoginRow(
                 onGoogleSignInOrSignUP: () async {
                   await authController
-                      .signUpWithGoogle(); // Sign up with Google
+                      .signInWithGoogle(); // Sign up with Google
                 },
                 onNaverSignInOrSignUP: () {
                   // Handle Naver sign-in
