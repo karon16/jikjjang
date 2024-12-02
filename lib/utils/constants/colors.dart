@@ -17,9 +17,9 @@ class JAppColors {
       Color(0xFFFFFFFF); // White text for dark backgrounds
 
   // Background colors
-  static const Color backgroundLight = Color(0xFFF5F6FA); // Light background
+  static const Color backgroundLight = Color(0xFFF4F8FB); // Light background
   static const Color backgroundDark =
-      Color(0xFF121212); // Dark background for dark mode
+      Color.fromARGB(255, 211, 15, 15); // Dark background for dark mode
   static const Color backgroundNavigationBarLight = Color(0xFFFFFFFF);
   static const Color backgroundNavigationBarDark = Color(0xFF000000);
 

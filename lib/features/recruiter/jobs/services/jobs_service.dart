@@ -15,7 +15,7 @@ class JobsService {
         .get();
 
     return querySnapshot.docs
-        .map((doc) => Job.fromMap(doc.data() as Map<String, dynamic>))
+        .map((doc) => Job.fromMap(doc.data()))
         .toList();
   }
 
@@ -26,7 +26,9 @@ class JobsService {
         .get();
 
     return querySnapshot.docs
-        .map((doc) => Job.fromMap(doc.data() as Map<String, dynamic>))
-        .toList();
+        .map((doc) => Job.fromMap(doc.data())).toList();
   }
+
+
+  
 }

@@ -20,3 +20,4 @@ final addJobProvider = Provider((ref) {
   final jobsService = ref.watch(jobsServiceProvider);
   return (Job job) => jobsService.addJob(job);
 });
+

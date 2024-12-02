@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jikjjang_app/data/providers/global_providers.dart';
-import 'package:jikjjang_app/features/authentication/controllers/auth_controllers.dart';
 import 'package:jikjjang_app/features/authentication/models/auth_model.dart';
 import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 import 'package:jikjjang_app/features/authentication/views/authentication_page.dart';
@@ -33,14 +32,9 @@ class RecruiterNavigationMenu extends ConsumerWidget {
           elevation: 0,
           selectedIndex: selectedIndex,
           onDestinationSelected: (index) {
-            if (index == 4) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AuthenticationPage()));
-            } else {
+         
               ref.read(navigationIndexProvider.notifier).state = index;
-            }
+            
           },
           destinations: [
             NavigationDestination(

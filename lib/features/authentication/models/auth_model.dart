@@ -25,4 +25,10 @@ class UserData {
       companyID: data['companyID'] ?? '',
     );
   }
+
+  get companyField => null;
+
+  get companyDescription => null;
+
+  get companyLogo => null;
 }

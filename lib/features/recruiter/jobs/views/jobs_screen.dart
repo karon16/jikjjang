@@ -9,7 +9,7 @@ import 'add_job_screen.dart';
 class JobsScreen extends ConsumerWidget {
   final String companyID;
 
-  const JobsScreen({required this.companyID, Key? key}) : super(key: key);
+  const JobsScreen({required this.companyID, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +18,7 @@ class JobsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Company Job Postings'),
+        title: const Text('Company Job Postings'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -55,18 +55,22 @@ class JobsScreen extends ConsumerWidget {
             );
           },
         ),
-        loading: () => Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final result = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AddJobScreen()),
           );
+          // Refresh the jobs provider when coming back to this screen
+          if (result == true) {
+            ref.refresh(companyJobsProvider(companyID));
+          }
         },
-        child: Icon(Icons.add),
         tooltip: 'Add Job',
+        child: Icon(Icons.add),
       ),
     );
   }

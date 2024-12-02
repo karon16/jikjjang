@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jikjjang_app/navigation/navigation_menu.dart';
+import 'package:jikjjang_app/navigation/jobseeker_navigation_menu.dart';
 import 'package:jikjjang_app/navigation/recruiter_navigation_menu.dart';
 import 'package:jikjjang_app/utils/theme/theme.dart';
 import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';

@@ -6,9 +6,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 import 'package:jikjjang_app/features/recruiter/jobs/controllers/jobs_provider.dart';
 import 'package:jikjjang_app/features/recruiter/jobs/models/job_model.dart';
+import 'package:jikjjang_app/data/providers/categories_providers.dart';
 
 class AddJobScreen extends ConsumerWidget {
-  AddJobScreen({Key? key}) : super(key: key);
+  AddJobScreen({super.key});
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -18,12 +19,7 @@ class AddJobScreen extends ConsumerWidget {
   final TextEditingController daysController = TextEditingController();
   File? selectedImage;
 
-  final List<String> categories = [
-    'Tech & IT',
-    'Education',
-    'Finance',
-    'Health'
-  ];
+
   final List<String> employmentTypes = ['Full-time', 'Part-time', 'Internship'];
 
   Future<void> _pickImage() async {
@@ -34,6 +30,8 @@ class AddJobScreen extends ConsumerWidget {
       selectedImage = File(pickedFile.path);
     }
   }
+
+  
 
   Future<String> _uploadImage(File imageFile) async {
     final storageRef = FirebaseStorage.instance
@@ -47,9 +45,15 @@ class AddJobScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authControllerProvider);
 
-    String selectedCategory = categories.first;
-    String selectedEmploymentType = employmentTypes.first;
+    final categoriesAsyncValue =
+        ref.watch(categoriesProvider); // Fetch categories
+    String selectedCategory = categoriesAsyncValue.maybeWhen(
+      data: (categories) => categories.isNotEmpty ? categories.first : '',
+      orElse: () => '',
+    );
 
+    String selectedEmploymentType = employmentTypes.first;
+  
     return Scaffold(
       appBar: AppBar(title: const Text('Add Job')),
       body: Padding(
@@ -62,42 +66,52 @@ class AddJobScreen extends ConsumerWidget {
                 controller: titleController,
                 decoration: const InputDecoration(labelText: 'Job Title'),
               ),
+              const SizedBox(height: 16),
+
               TextField(
                 controller: descriptionController,
                 decoration: const InputDecoration(labelText: 'Description'),
                 maxLines: 5,
               ),
+              const SizedBox(height: 16),
               TextField(
                 controller: locationController,
                 decoration: const InputDecoration(labelText: 'Location'),
               ),
+              const SizedBox(height: 16),
               TextField(
                 controller: salaryRangeController,
                 decoration: const InputDecoration(labelText: 'Salary Range'),
               ),
+              const SizedBox(height: 16),
               TextField(
                 controller: requirementsController,
                 decoration: const InputDecoration(labelText: 'Requirements'),
                 maxLines: 3,
               ),
+              const SizedBox(height: 16),
               TextField(
                 controller: daysController,
                 decoration: const InputDecoration(labelText: 'Deadline (days)'),
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: selectedCategory,
-                decoration: const InputDecoration(labelText: 'Category'),
-                items: categories.map((String category) {
-                  return DropdownMenuItem<String>(
-                    value: category,
-                    child: Text(category),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  if (value != null) selectedCategory = value;
-                },
+              categoriesAsyncValue.when(
+                data: (categories) => DropdownButtonFormField<String>(
+                  value: selectedCategory.isNotEmpty ? selectedCategory : '',
+                  decoration: const InputDecoration(labelText: 'Category'),
+                  items: categories.map((String category) {
+                    return DropdownMenuItem<String>(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (value != null) selectedCategory = value;
+                  },
+                ),
+                loading: () => const CircularProgressIndicator(),
+                error: (err, _) => Text('Failed to load categories: $err'),
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
@@ -162,7 +176,7 @@ class AddJobScreen extends ConsumerWidget {
                   daysController.clear();
 
                   if (context.mounted) {
-                    Navigator.pop(context);
+                    Navigator.pop(context, true);
                   }
                 },
                 child: const Text('Add Job'),

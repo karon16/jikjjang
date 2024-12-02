@@ -9,7 +9,7 @@ class JAppBarTheme {
         JAppColors.backgroundLight, // Light theme app bar background color
     foregroundColor:
         JAppColors.primary, // Light theme app bar text and icon color
-    elevation: 4.0, // Light shadow effect
+    elevation: 0.0, // Light shadow effect
     titleTextStyle: TextStyle(
       fontSize: 18.0,
       fontWeight: FontWeight.w600,
@@ -25,7 +25,7 @@ class JAppBarTheme {
         JAppColors.backgroundDark, // Dark theme app bar background color
     foregroundColor:
         JAppColors.primary, // Dark theme app bar text and icon color
-    elevation: 4.0, // Dark shadow effect
+    elevation: 0.0, // Dark shadow effect
     titleTextStyle: TextStyle(
       fontSize: 18.0,
       fontWeight: FontWeight.w600,

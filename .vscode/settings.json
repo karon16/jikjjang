@@ -2,7 +2,9 @@
     "java.compile.nullAnalysis.mode": "automatic",
     "java.configuration.updateBuildConfiguration": "interactive",
     "cSpell.words": [
+        "appbar",
         "jikjjang",
-        "nunito"
+        "nunito",
+        "Sectionheader"
     ]
 }
