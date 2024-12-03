@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../services/jobs_service.dart';
-import '../models/job_model.dart';
+import 'package:jikjjang_app/data/models/job_model.dart';
+import 'package:jikjjang_app/features/recruiter/jobs/services/job_service.dart';
 
 final jobsServiceProvider = Provider((ref) => JobsService());
 

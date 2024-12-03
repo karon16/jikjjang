@@ -5,7 +5,11 @@ import 'package:jikjjang_app/common/widgets/cards/category_card.dart';
 import 'package:jikjjang_app/common/widgets/cards/job_card.dart';
 import 'package:jikjjang_app/common/widgets/images/j_rounded_image.dart';
 import 'package:jikjjang_app/common/widgets/sectionheader.dart';
+import 'package:jikjjang_app/data/providers/categories_providers.dart';
+
+import 'package:jikjjang_app/data/providers/job_providers.dart';
 import 'package:jikjjang_app/utils/constants/colors.dart';
+
 import 'package:jikjjang_app/utils/constants/image_strings.dart';
 import 'package:jikjjang_app/utils/constants/sizes.dart';
 import 'package:jikjjang_app/utils/constants/text_strings.dart';
@@ -15,6 +19,10 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final categoriesAsyncValue = ref.watch(categoriesProviderFull);
+    // final user = ref.watch(authControllerProvider);
+    final jobsAsyncValue = ref.watch(jobSeekersProvider);
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
@@ -81,11 +89,6 @@ class MyHomePage extends ConsumerWidget {
                     child: TextField(
                       decoration: InputDecoration(
                         hintText: JTextStrings.searchPlaceholder,
-                        // hintStyle: TextStyle(
-                        //   color: JAppColors.textSecondary,
-                        // ),
-                        // filled: true,
-                        // fillColor: Colors.white,
                         contentPadding: const EdgeInsets.symmetric(
                           vertical: 14,
                           horizontal: 14,
@@ -164,33 +167,23 @@ class MyHomePage extends ConsumerWidget {
             const SizedBox(height: 25),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: JSizes.paddingMD),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CategoryCard(
-                    iconPath: JImage_strings.codeIcon,
-                    title: 'Tech & IT',
-                    onTap: () {},
-                  ),
-                  CategoryCard(
-                    iconPath: JImage_strings.educationIcon,
-                    title: 'Education',
-                    onTap: () {},
-                  ),
-                  CategoryCard(
-                    iconPath: JImage_strings.graphIcon,
-                    title: 'Business',
-                    onTap: () {},
-                  ),
-                  CategoryCard(
-                    iconPath: JImage_strings.paletteIcon,
-                    title: 'Creative',
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: JSizes.paddingMD),
+                child: categoriesAsyncValue.when(
+                  data: (categories) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: categories.take(4).map((category) {
+                        return CategoryCard(
+                            iconPath: category.icon,
+                            title: category.name,
+                            onTap: () {});
+                      }).toList(),
+                    );
+                  },
+                  error: (err, _) => Text('An error occured: $err'),
+                  loading: () => const CircularProgressIndicator(),
+                )),
             const SizedBox(
               height: 25,
             ),
@@ -209,29 +202,41 @@ class MyHomePage extends ConsumerWidget {
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: JSizes.paddingMD),
-              child: JobCard(
-                companyLogo: JImage_strings.skLogo,
-                companyName: 'SK Telecom',
-                jobTitle: 'Customer Support Specialist',
-                jobType: 'Full-time',
-                level: 'Entry Level',
-                location: 'Seoul, Gangnam',
-                daysLeft: 'D-29',
-                onBookmarkPressed: () {
-                  // Handle bookmark action
+              child: jobsAsyncValue.when(
+                data: (jobs) {
+                  return Column(
+                    children: jobs.map((job) {
+                      return Column(
+                        children: [
+                          JobCard(
+                            companyLogo: job.companyLogoUrl,
+                            companyName: job.companyName,
+                            jobTitle: job.title,
+                            jobType: job.employmentType,
+                            level: 'Entry Level',
+                            location: job.location,
+                            daysLeft:
+                                'D${DateTime.now().difference(job.expiresAt).inDays}',
+                            onBookmarkPressed: () {
+                              // Handle bookmark action
+                            },
+                            companyDescription: job.companyIndustry,
+                          ),
+                          const SizedBox(height: 16), // Add vertical spacing
+                        ],
+                      );
+                    }).toList(),
+                  );
                 },
-                companyDescription: 'Hello world',
+                error: (err, _) => Text('An error occurred: $err'),
+                loading: () => const CircularProgressIndicator(),
+              ),
             ),
-            )
+
             // Add more JobCards as needed
-              
-            
-
-
           ],
         ),
       ),
     );
   }
 }
-

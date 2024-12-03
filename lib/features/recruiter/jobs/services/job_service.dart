@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/job_model.dart';
+import 'package:jikjjang_app/data/models/job_model.dart';
 
 class JobsService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -14,9 +14,7 @@ class JobsService {
         .where('postedBy', isEqualTo: recruiterID)
         .get();
 
-    return querySnapshot.docs
-        .map((doc) => Job.fromMap(doc.data()))
-        .toList();
+    return querySnapshot.docs.map((doc) => Job.fromMap(doc.data())).toList();
   }
 
   Future<List<Job>> getJobsByCompany(String companyID) async {
@@ -25,10 +23,6 @@ class JobsService {
         .where('companyID', isEqualTo: companyID)
         .get();
 
-    return querySnapshot.docs
-        .map((doc) => Job.fromMap(doc.data())).toList();
+    return querySnapshot.docs.map((doc) => Job.fromMap(doc.data())).toList();
   }
-
-
-  
 }

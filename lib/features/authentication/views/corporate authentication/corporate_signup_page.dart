@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
+import 'package:jikjjang_app/utils/helpers/helper_functions.dart';
 
 class CorporateSignup extends ConsumerWidget {
   const CorporateSignup({super.key});
@@ -18,8 +22,21 @@ class CorporateSignup extends ConsumerWidget {
     final companyNameController = TextEditingController();
     final companyAddressController = TextEditingController();
     final detailedAddressController = TextEditingController();
+    final companyLogoController = TextEditingController();
+    final companyDescriptionController = TextEditingController();
+    final companyIndustryController = TextEditingController();
+    File? _companyLogo;
 
     bool isAgreementChecked = false;
+
+
+    Future<void> pickCompanyLogo() async {
+      final ImagePicker _picker = ImagePicker();
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        _companyLogo = File(pickedFile.path);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -151,6 +168,37 @@ class CorporateSignup extends ConsumerWidget {
             ),
             const SizedBox(height: 16.0),
 
+            // Company Logo
+            GestureDetector(
+              onTap: pickCompanyLogo,
+              child: Container(
+                width: 100,
+                height: 100,
+                color: Colors.grey[200],
+                child: _companyLogo == null
+                    ? const Icon(Icons.camera_alt)
+                    : Image.file(File(_companyLogo!.path)),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+
+            // Company Description
+            TextField(
+              controller: companyDescriptionController,
+              decoration: const InputDecoration(
+                labelText: "Company Description",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: companyIndustryController,
+              decoration: const InputDecoration(
+                  labelText: "Company Industry", border: OutlineInputBorder()),
+            ),
+            const SizedBox(height: 16.0),
+
+
             // Company Address with Search
             Row(
               children: [
@@ -209,6 +257,14 @@ class CorporateSignup extends ConsumerWidget {
                 final password = passwordController.text.trim();
                 final companyName = companyNameController.text.trim();
                 final companyAddress = companyAddressController.text.trim();
+                companyLogoController.text.trim();
+                final companyDescription =
+                    companyDescriptionController.text.trim();
+                final companyIndustry = companyIndustryController.text.trim();
+
+                final helper = HelperFunctions();
+                final imageUrl =
+                    await helper.uploadImage(_companyLogo!, 'company_images');
 
                 if (isAgreementChecked) {
                   // Call signup logic with recruiter role
@@ -222,6 +278,10 @@ class CorporateSignup extends ConsumerWidget {
                           role: 'jobRecruiter',
                           companyName: companyName,
                           companyAddress: companyAddress,
+                          companyLogo: imageUrl,
+                          companyDescription: companyDescription,
+                          companyIndustry: companyIndustry,
+
                         );
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Signup successful!')),

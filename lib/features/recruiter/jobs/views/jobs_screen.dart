@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
 import 'package:jikjjang_app/features/authentication/views/authentication_page.dart';
-import '../controllers/jobs_provider.dart';
+import 'package:jikjjang_app/features/recruiter/jobs/controllers/jobs_provider.dart';
 import 'add_job_screen.dart';
 
 class JobsScreen extends ConsumerWidget {
@@ -66,6 +66,7 @@ class JobsScreen extends ConsumerWidget {
           );
           // Refresh the jobs provider when coming back to this screen
           if (result == true) {
+            // ignore: unused_result
             ref.refresh(companyJobsProvider(companyID));
           }
         },

@@ -13,6 +13,9 @@ class Job {
   final String postedBy;
   final List<String> applicants;
   final String? jobImageUrl;
+  final String companyLogoUrl;
+  final String companyIndustry;
+  final String companyName;
   // final String companyField;
   // final String companyDescription;
   // final String companyLogo;
@@ -32,9 +35,9 @@ class Job {
     required this.postedBy,
     required this.applicants,
     this.jobImageUrl,
-    // required this.companyField,
-    // required this.companyDescription,
-    // required this.companyLogo,
+    required this.companyLogoUrl,
+    required this.companyIndustry,
+    required this.companyName,
   });
 
   factory Job.fromMap(Map<String, dynamic> map) {
@@ -53,9 +56,9 @@ class Job {
       postedBy: map['postedBy'],
       applicants: List<String>.from(map['applicants']),
       jobImageUrl: map['jobImageUrl'],
-      // companyField: map['companyField'],
-      // companyDescription: map['companyDescription'],
-      // companyLogo: map['companyLogo'],
+      companyLogoUrl: map['companyLogoUrl'],
+      companyIndustry: map['companyIndustry'],
+      companyName: map['companyName'],
     );
   }
 
@@ -75,9 +78,9 @@ class Job {
       'postedBy': postedBy,
       'applicants': applicants,
       'jobImageUrl': jobImageUrl,
-      // 'companyField': companyField,
-      // 'companyDescription': companyDescription,
-      // 'companyLogo': companyLogo,
+      'companyLogoUrl': companyLogoUrl,
+      'companyIndustry': companyIndustry,
+      'companyName': companyName,
     };
   }
 }

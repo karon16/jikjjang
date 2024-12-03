@@ -64,6 +64,9 @@ Future<void> signInWithEmail(String email, String password) async {
     required String role,
     String? companyName,
     String? companyAddress,
+      String? companyLogo,
+      String? companyDescription,
+      String? companyIndustry
   }) async {
     final userCredential = await _ref
         .read(authRepositoryProvider)
@@ -78,6 +81,10 @@ Future<void> signInWithEmail(String email, String password) async {
             role: role,
             companyName: companyName,
             companyAddress: companyAddress,
+          companyLogo: companyLogo ?? "",
+          companyDescription: companyDescription ?? "",
+          companyField: companyIndustry ?? ""
+          
           );
       final userData = await _fetchUserData(user.uid);
       state = userData;

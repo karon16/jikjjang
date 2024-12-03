@@ -32,7 +32,7 @@ class CategoryCard extends StatelessWidget {
                 ),
               ],
             ),
-            child: Image.asset(
+            child: Image.network(
               iconPath,
               width: 40,
               height: 40,

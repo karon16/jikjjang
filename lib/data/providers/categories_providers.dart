@@ -10,3 +10,10 @@ final categoriesProvider = FutureProvider<List<String>>((ref) async {
   final categories = await categoriesService.fetchCategories();
   return categories.map((category) => category.name).toList();
 });
+
+
+final categoriesProviderFull = FutureProvider<List>((ref) async {
+  final categoriesService = ref.watch(categoriesServiceProvider);
+  final categories = await categoriesService.fetchCategories();
+  return categories;
+});

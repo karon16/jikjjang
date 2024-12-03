@@ -2,11 +2,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:jikjjang_app/data/models/job_model.dart';
 import 'package:jikjjang_app/features/authentication/providers/auth_providers.dart';
-import 'package:jikjjang_app/features/recruiter/jobs/controllers/jobs_provider.dart';
-import 'package:jikjjang_app/features/recruiter/jobs/models/job_model.dart';
 import 'package:jikjjang_app/data/providers/categories_providers.dart';
+import 'package:jikjjang_app/features/recruiter/jobs/controllers/company_provider.dart';
+import 'package:jikjjang_app/features/recruiter/jobs/controllers/jobs_provider.dart';
+import 'package:jikjjang_app/utils/helpers/helper_functions.dart';
+import 'package:jikjjang_app/features/recruiter/jobs/models/company_model.dart';
+
 
 class AddJobScreen extends ConsumerWidget {
   AddJobScreen({super.key});
@@ -31,19 +34,10 @@ class AddJobScreen extends ConsumerWidget {
     }
   }
 
-  
-
-  Future<String> _uploadImage(File imageFile) async {
-    final storageRef = FirebaseStorage.instance
-        .ref()
-        .child('job_images/${DateTime.now().millisecondsSinceEpoch}');
-    await storageRef.putFile(imageFile);
-    return await storageRef.getDownloadURL();
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authControllerProvider);
+    final companyAsyncValue = ref.watch(companyProvider(user!.companyID));
 
     final categoriesAsyncValue =
         ref.watch(categoriesProvider); // Fetch categories
@@ -133,53 +127,78 @@ class AddJobScreen extends ConsumerWidget {
                 child: const Text('Select Job Image'),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  if (selectedImage == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Please select an image')));
-                    return;
+              companyAsyncValue.when(
+                data: (company) {
+                  if (company == null) {
+                    return const Center(
+                      child: Text('Company details not found.'),
+                    );
                   }
 
-                  final imageUrl = await _uploadImage(selectedImage!);
+                  return ElevatedButton(
+                    onPressed: () async {
+                      if (selectedImage == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Please select an image')));
+                        return;
+                      }
 
-                  final newJob = Job(
-                    jobID: DateTime.now().millisecondsSinceEpoch.toString(),
-                    companyID: user!.companyID,
-                    category: selectedCategory,
-                    title: titleController.text,
-                    description: descriptionController.text,
-                    requirements: requirementsController.text.split(','),
-                    location: locationController.text,
-                    employmentType: selectedEmploymentType,
-                    salaryRange: salaryRangeController.text,
-                    createdAt: DateTime.now(),
-                    expiresAt: DateTime.now()
-                        .add(Duration(days: int.parse(daysController.text))),
-                    postedBy: user.id,
-                    applicants: [],
-                    jobImageUrl: imageUrl,
+                      // Upload the image
+                      final helper = HelperFunctions();
+                      final imageUrl = await helper.uploadImage(
+                          selectedImage!, "job_images");
+
+                      // Create new Job object
+                      final newJob = Job(
+                        jobID: DateTime.now().millisecondsSinceEpoch.toString(),
+                        companyID: user.companyID,
+                        companyLogoUrl: company.logoURL,
+                        companyIndustry: company.industry,
+                        companyName: company.companyName,
+                        category: selectedCategory,
+                        title: titleController.text,
+                        description: descriptionController.text,
+                        requirements: requirementsController.text.split(','),
+                        location: locationController.text,
+                        employmentType: selectedEmploymentType,
+                        salaryRange: salaryRangeController.text,
+                        createdAt: DateTime.now(),
+                        expiresAt: DateTime.now().add(
+                            Duration(days: int.parse(daysController.text))),
+                        postedBy: user.id,
+                        applicants: [],
+                        jobImageUrl: imageUrl,
+                      );
+
+                      // Add job using the provider
+                      ref.read(addJobProvider).call(newJob);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Job added successfully!')),
+                      );
+
+                      // Clear form
+                      titleController.clear();
+                      descriptionController.clear();
+                      locationController.clear();
+                      salaryRangeController.clear();
+                      requirementsController.clear();
+                      daysController.clear();
+
+                      if (context.mounted) {
+                        Navigator.pop(context, true);
+                      }
+                    },
+                    child: const Text('Add Job'),
                   );
-
-                  // Add job using the provider.
-                  ref.read(addJobProvider).call(newJob);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Job added successfully!')),
-                  );
-
-                  // Clear the form after submission.
-                  titleController.clear();
-                  descriptionController.clear();
-                  locationController.clear();
-                  salaryRangeController.clear();
-                  requirementsController.clear();
-                  daysController.clear();
-
-                  if (context.mounted) {
-                    Navigator.pop(context, true);
-                  }
                 },
-                child: const Text('Add Job'),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                error: (error, stack) => Center(
+                  child: Text('Error: $error'),
+                ),
               ),
             ],
           ),
