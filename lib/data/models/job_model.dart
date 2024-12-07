@@ -11,11 +11,12 @@ class Job {
   final DateTime createdAt;
   final DateTime expiresAt;
   final String postedBy;
-  final List<String> applicants;
+  final List<Map<String, dynamic>> applicants;
   final String? jobImageUrl;
   final String companyLogoUrl;
   final String companyIndustry;
   final String companyName;
+  final String? title_lower;
   // final String companyField;
   // final String companyDescription;
   // final String companyLogo;
@@ -38,29 +39,41 @@ class Job {
     required this.companyLogoUrl,
     required this.companyIndustry,
     required this.companyName,
+    this.title_lower,
   });
 
-  factory Job.fromMap(Map<String, dynamic> map) {
+factory Job.fromMap(Map<String, dynamic> map) {
     return Job(
-      jobID: map['jobID'],
-      companyID: map['companyID'],
-      category: map['category'],
-      title: map['title'],
-      description: map['description'],
-      requirements: List<String>.from(map['requirements']),
-      location: map['location'],
-      employmentType: map['employmentType'],
+      jobID: map['jobID'] ?? '', // Handle null or missing values
+      companyID: map['companyID'] ?? '',
+      category: map['category'] is Map<String, dynamic>
+          ? map['category']['name'] // Extract nested value
+          : map['category'] ?? '', // Default to an empty string
+      title: map['title'] ?? '',
+      title_lower: map['title_lower'] ?? '',
+      description: map['description'] ?? '',
+      requirements: map['requirements'] is List
+          ? List<String>.from(map['requirements'])
+          : [], // Default to empty list
+      location: map['location'] ?? '',
+      employmentType: map['employmentType'] ?? '',
       salaryRange: map['salaryRange'],
-      createdAt: DateTime.parse(map['createdAt']),
-      expiresAt: DateTime.parse(map['expiresAt']),
-      postedBy: map['postedBy'],
-      applicants: List<String>.from(map['applicants']),
+      createdAt: DateTime.tryParse(map['createdAt'] ?? '') ??
+          DateTime.now(), // Fallback to current time
+      expiresAt: DateTime.tryParse(map['expiresAt'] ?? '') ??
+          DateTime.now()
+              .add(const Duration(days: 30)), // Default to 30 days from now
+      postedBy: map['postedBy'] ?? '',
+      applicants: map['applicants'] is List
+          ? List<Map<String, dynamic>>.from(map['applicants'])
+          : [],
       jobImageUrl: map['jobImageUrl'],
-      companyLogoUrl: map['companyLogoUrl'],
-      companyIndustry: map['companyIndustry'],
-      companyName: map['companyName'],
+      companyLogoUrl: map['companyLogoUrl'] ?? '',
+      companyIndustry: map['companyIndustry'] ?? '',
+      companyName: map['companyName'] ?? '',
     );
   }
+
 
   Map<String, dynamic> toMap() {
     return {
@@ -68,6 +81,7 @@ class Job {
       'companyID': companyID,
       'category': category,
       'title': title,
+'title_lower': title.toLowerCase(),
       'description': description,
       'requirements': requirements,
       'location': location,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jikjjang_app/utils/constants/sizes.dart';
 import 'package:jikjjang_app/utils/device/device_utility.dart';
 
 class JAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -9,6 +10,8 @@ class JAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leadingWidget,
     this.onLeadingPressed,
     required this.actions,
+    this.bottom,
+    this.route,
   });
 
   final Widget? title;
@@ -16,6 +19,8 @@ class JAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leadingWidget;
   final VoidCallback? onLeadingPressed;
   final List<Widget> actions;
+  final PreferredSizeWidget? bottom;
+  final String? route;
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +29,23 @@ class JAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: _buildLeading(context),
       leadingWidth: 75, // Adjusted to prevent overflow
       title: title != null
-          ? Flexible(
+          ? Padding(
+              padding: const EdgeInsets.only(right: JSizes.paddingMD),
               child: DefaultTextStyle(
-                style: Theme.of(context).textTheme.headlineMedium!,
-                overflow: TextOverflow.ellipsis, // Handle long titles
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: JSizes.font18,
+                    ),
                 child: title!,
               ),
             )
           : null,
-      // titleSpacing: 20,
       actions: actions,
-      toolbarHeight: JDeviceUtility.getAppBarHeight(),
+      toolbarHeight: _calculateToolbarHeight(),
       elevation: 0,
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       centerTitle: false,
+      bottom: bottom,
     );
   }
 
@@ -46,8 +54,10 @@ class JAppBar extends StatelessWidget implements PreferredSizeWidget {
       return IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () {
-          Navigator.pop(context);
-        },
+            FocusScope.of(context).unfocus(); // Removes focus from text field
+            Navigator.pushReplacementNamed(context, route ?? '/');
+            // Navigator.pop(context); // Go back to the previous screen
+          }
       );
     } else if (leadingWidget != null) {
       return leadingWidget;
@@ -56,5 +66,12 @@ class JAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(JDeviceUtility.getAppBarHeight());
+  Size get preferredSize => Size.fromHeight(_calculateToolbarHeight());
+
+  double _calculateToolbarHeight() {
+    double baseHeight = JDeviceUtility.getAppBarHeight();
+    return bottom != null
+        ? baseHeight + bottom!.preferredSize.height
+        : baseHeight;
+  }
 }

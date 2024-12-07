@@ -5,6 +5,7 @@ import 'package:jikjjang_app/features/authentication/providers/auth_providers.da
 import 'package:jikjjang_app/features/authentication/views/authentication_page.dart';
 import 'package:jikjjang_app/features/job_seeker/home/views/home_screen.dart';
 import 'package:jikjjang_app/features/job_seeker/profile/screens/profile_screen.dart';
+import 'package:jikjjang_app/features/job_seeker/jobs/views/jobs_screen.dart';
 
 // Define a provider for managing the selected index
 
@@ -69,7 +70,7 @@ class NavigationMenu extends ConsumerWidget {
       case 0:
         return const MyHomePage();
       case 1:
-        return const Center(child: Text('Jobs Screen'));
+        return const JobsScreen();
       case 2:
         return const Center(child: Text('Forum Screen'));
       case 3:

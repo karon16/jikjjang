@@ -16,6 +16,7 @@ class ProfileScreen extends ConsumerWidget {
             child: Column(
       children: [
         JAppBar(
+          showBackArrow: false,
           actions: [
             IconButton(
               icon: const Icon(Icons.logout),
@@ -31,6 +32,7 @@ class ProfileScreen extends ConsumerWidget {
               },
             ),
           ],
+          // bottom: null,
         ),
         const Text('Profile Page')
       ],

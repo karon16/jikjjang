@@ -8,7 +8,6 @@ import 'package:jikjjang_app/data/providers/categories_providers.dart';
 import 'package:jikjjang_app/features/recruiter/jobs/controllers/company_provider.dart';
 import 'package:jikjjang_app/features/recruiter/jobs/controllers/jobs_provider.dart';
 import 'package:jikjjang_app/utils/helpers/helper_functions.dart';
-import 'package:jikjjang_app/features/recruiter/jobs/models/company_model.dart';
 
 
 class AddJobScreen extends ConsumerWidget {

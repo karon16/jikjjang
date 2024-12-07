@@ -44,6 +44,7 @@ Future<User?> signInWithEmail(String email, String password) async {
         email: user.email ?? '',
         name: user.displayName ?? '',
         role: 'jobSeeker',
+        applications: [],
       );
     }
 
@@ -70,6 +71,7 @@ Future<User?> signInWithEmail(String email, String password) async {
     String? companyLogo,
     String? companyDescription,
     String? companyField,
+    List<Map<String, dynamic>>? applications,
   }) async {
     final userDoc = _firestore.collection('users').doc(userId);
     final userExists = (await userDoc.get()).exists;
@@ -94,6 +96,7 @@ Future<User?> signInWithEmail(String email, String password) async {
               }
             : null,
         'companyID': role == 'jobRecruiter' ? userId : null,
+        'applications': []
       });
 
       if (role == 'jobRecruiter' &&

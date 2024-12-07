@@ -71,7 +71,7 @@ class JobsScreen extends ConsumerWidget {
           }
         },
         tooltip: 'Add Job',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -24,6 +24,18 @@ dependencies:
   firebase_storage: ^12.3.6
   carousel_slider: ^5.0.0
 
+
+
+flutter_native_splash:
+  android: true
+  ios: true
+  color: "#F5F6FA"
+  color_dark: "#121212"
+  image: assets/logos/jikjjang_logo.png
+  image_dark: assets/logos/jikjjang_logo.png
+  web: false
+  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -64,3 +76,4 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
 
+  

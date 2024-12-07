@@ -26,7 +26,7 @@ class JAppTheme {
   static ThemeData darkTheme = ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      primaryColor: JAppColors.primary,
+      primaryColor: JAppColors.accent,
       scaffoldBackgroundColor: JAppColors.backgroundDark,
       textTheme: JTextTheme.darkTextTheme,
       elevatedButtonTheme: JElevatedButtonTheme.darkElevatedButtonTheme,

@@ -8,6 +8,7 @@ import 'package:jikjjang_app/common/widgets/sectionheader.dart';
 import 'package:jikjjang_app/data/providers/categories_providers.dart';
 
 import 'package:jikjjang_app/data/providers/job_providers.dart';
+import 'package:jikjjang_app/features/job_seeker/jobs/views/job_details.dart';
 import 'package:jikjjang_app/utils/constants/colors.dart';
 
 import 'package:jikjjang_app/utils/constants/image_strings.dart';
@@ -204,11 +205,20 @@ class MyHomePage extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: JSizes.paddingMD),
               child: jobsAsyncValue.when(
                 data: (jobs) {
+
                   return Column(
                     children: jobs.map((job) {
                       return Column(
                         children: [
                           JobCard(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => JobDetailPage(job: job),
+                                ),
+                              );
+                            },
                             companyLogo: job.companyLogoUrl,
                             companyName: job.companyName,
                             jobTitle: job.title,

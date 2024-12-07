@@ -25,16 +25,16 @@ class CorporateSignup extends ConsumerWidget {
     final companyLogoController = TextEditingController();
     final companyDescriptionController = TextEditingController();
     final companyIndustryController = TextEditingController();
-    File? _companyLogo;
+    File? companyLogo;
 
     bool isAgreementChecked = false;
 
 
     Future<void> pickCompanyLogo() async {
-      final ImagePicker _picker = ImagePicker();
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      final ImagePicker picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
-        _companyLogo = File(pickedFile.path);
+        companyLogo = File(pickedFile.path);
       }
     }
 
@@ -175,9 +175,9 @@ class CorporateSignup extends ConsumerWidget {
                 width: 100,
                 height: 100,
                 color: Colors.grey[200],
-                child: _companyLogo == null
+                child: companyLogo == null
                     ? const Icon(Icons.camera_alt)
-                    : Image.file(File(_companyLogo!.path)),
+                    : Image.file(File(companyLogo!.path)),
               ),
             ),
             const SizedBox(height: 16.0),
@@ -264,7 +264,7 @@ class CorporateSignup extends ConsumerWidget {
 
                 final helper = HelperFunctions();
                 final imageUrl =
-                    await helper.uploadImage(_companyLogo!, 'company_images');
+                    await helper.uploadImage(companyLogo!, 'company_images');
 
                 if (isAgreementChecked) {
                   // Call signup logic with recruiter role
